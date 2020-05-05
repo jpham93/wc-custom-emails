@@ -17,8 +17,8 @@ class Custom_Email_Manager {
         add_action( 'woocommerce_order_status_example', array( &$this, 'custom_trigger_example_action' ), 10, 2 );
         add_action( 'woocommerce_order_status_finishing', array( &$this, 'custom_trigger_finishing_action' ), 10, 2 );
         add_action( 'woocommerce_order_status_special', array( &$this, 'custom_trigger_special_action' ), 10, 2 );
-        add_action( 'woocommerce_order_status_ready', array( &$this, 'custom_trigger_ready_action' ), 10,
-            2 );
+        add_action( 'woocommerce_order_status_ready', array( &$this, 'custom_trigger_ready_action' ), 10, 2 );
+        add_action( 'woocommerce_order_status_proof_ready', array( &$this, 'custom_trigger_ready_action' ), 10, 2 );
         // include the email class files
         add_filter( 'woocommerce_email_classes', array( &$this, 'custom_init_emails' ) );
 
@@ -30,6 +30,8 @@ class Custom_Email_Manager {
             'custom_finishing_email_trigger',
             'custom_special_email',
             'custom_special_email_trigger',
+            'custom_proof_ready_email',
+            'custom_proof_ready_emailtrigger',
             'custom_ready_email',
             'custom_ready_email_trigger'
         );
@@ -57,6 +59,10 @@ class Custom_Email_Manager {
         }
 
         if ( ! isset( $emails['Ready_Email']) ) {
+            $emails[ 'Ready_Email' ] = include_once( plugin_dir_path(__DIR__) . 'emails/class-ready-for-pickup-email.php' );
+        }
+
+        if ( ! isset( $emails['Proof_Ready']) ) {
             $emails[ 'Ready_Email' ] = include_once( plugin_dir_path(__DIR__) . 'emails/class-ready-for-pickup-email.php' );
         }
 
@@ -99,6 +105,16 @@ class Custom_Email_Manager {
 
             WC_Emails::instance();
             do_action( 'custom_ready_email_notification', $order_id );
+
+        }
+    }
+
+    public function custom_trigger_proof_ready_action( $order_id, $posted ) {
+        // add an action for our email trigger if the order id is valid
+        if ( isset( $order_id ) && 0 != $order_id ) {
+
+            WC_Emails::instance();
+            do_action( 'custom_proof_ready_email_notification', $order_id );
 
         }
     }
