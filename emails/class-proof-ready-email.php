@@ -13,21 +13,22 @@ class Proof_Ready_Email extends WC_Email {
     function __construct() {
 
         // Add email ID, title, description, heading, subject
-        $this->id                   = 'proof_ready_email';
+        $this->id                   = 'proof_email';
         $this->customer_email       = true;
-        $this->title                = __( 'Custom Item Email', 'proof-ready' );
-        $this->description          = __( 'This email is received when an order status is changed to Pending.', 'proof-ready' );
+        $this->title                = __( 'Proof Ready', 'proof-ready-email' );
+        $this->description          = __( 'This email is received when an order status is changed to "Proof Ready".',
+            'proof-ready-email' );
 
-        $this->heading              = __( 'Custom Item Email', 'proof-ready' );
-        $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'proof-ready' );
+        $this->heading              = __( 'Proof Ready', 'proof-ready-email' );
+        $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'proof-ready-email' );
 
         // email template path
         $this->template_html    = 'emails/proof-ready-email-html.php';
         $this->template_plain   = 'emails/plain/proof-ready-email-plain.php';
 
         // Triggers for this email
-        add_action( 'custom_proof_ready_email_notification', array( $this, 'queue_notification' ) );
-        add_action( 'custom_proof_ready_email_trigger_notification', array( $this, 'trigger' ) );
+        add_action( 'custom_proof_email_notification', array( $this, 'queue_notification' ) );
+        add_action( 'custom_proof_email_trigger_notification', array( $this, 'trigger' ) );
 
         // Call parent constructor
         parent::__construct();
@@ -53,7 +54,7 @@ class Proof_Ready_Email extends WC_Email {
         // foreach item in the order
         foreach ( $items as $item_key => $item_value ) {
             // add an event for the item email, pass the item ID so other details can be collected as needed
-            wp_schedule_single_event( time(), 'custom_proof_ready_email_trigger', array( 'item_id' => $item_key ) );
+            wp_schedule_single_event( time(), 'custom_proof_email_trigger', array( 'item_id' => $item_key ) );
         }
     }
 
@@ -86,10 +87,10 @@ class Proof_Ready_Email extends WC_Email {
             } else {
 
                 $this->find[]    = '{order_date}';
-                $this->replace[] = __( 'N/A', 'proof-ready' );
+                $this->replace[] = __( 'N/A', 'proof-ready-email' );
 
                 $this->find[]    = '{order_number}';
-                $this->replace[] = __( 'N/A', 'proof-ready' );
+                $this->replace[] = __( 'N/A', 'proof-ready-email' );
             }
 
             // if no recipient is set, do not send the email
@@ -194,45 +195,45 @@ class Proof_Ready_Email extends WC_Email {
         $placeholder_text  = sprintf( __( 'Available placeholders: %s', 'woocommerce' ), '<code>' . esc_html( implode( '</code>, <code>', array_keys( $this->placeholders ) ) ) . '</code>' );
         $this->form_fields = array(
             'enabled' => array(
-                'title' 		=> __( 'Enable/Disable', 'proof-ready' ),
+                'title' 		=> __( 'Enable/Disable', 'proof-ready-email' ),
                 'type' 			=> 'checkbox',
-                'label' 		=> __( 'Enable this email notification', 'proof-ready' ),
+                'label' 		=> __( 'Enable this email notification', 'proof-ready-email' ),
                 'default' 		=> 'yes'
             ),
             'subject' => array(
-                'title' 		=> __( 'Subject', 'proof-ready' ),
+                'title' 		=> __( 'Subject', 'proof-ready-email' ),
                 'type' 			=> 'text',
-                'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'proof-ready' ), $this->subject ),
+                'description' 	=> sprintf( __( 'This controls the email subject line. Leave blank to use the default subject: <code>%s</code>.', 'proof-ready-email' ), $this->subject ),
                 'placeholder' 	=> '',
                 'default' 		=> ''
             ),
             'heading' => array(
-                'title' 		=> __( 'Email Heading', 'proof-ready' ),
+                'title' 		=> __( 'Email Heading', 'proof-ready-email' ),
                 'type' 			=> 'text',
-                'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'proof-ready' ), $this->heading ),
+                'description' 	=> sprintf( __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>.', 'proof-ready-email' ), $this->heading ),
                 'placeholder' 	=> '',
                 'default' 		=> ''
             ),
             'additional_content' => array(
-                'title'       => __( 'Additional content', 'proof-ready' ),
-                'description' => __( 'Text to appear below the main email content.', 'proof-ready' ) . ' ' .
+                'title'       => __( 'Additional content', 'proof-ready-email' ),
+                'description' => __( 'Text to appear below the main email content.', 'proof-ready-email' ) . ' ' .
                     $placeholder_text,
                 'css'         => 'width:400px; height: 75px;',
-                'placeholder' => __( 'N/A', 'proof-ready' ),
+                'placeholder' => __( 'N/A', 'proof-ready-email' ),
                 'type'        => 'textarea',
                 'default'     => $this->get_default_additional_content(),
                 'desc_tip'    => true,
             ),
             'email_type' => array(
-                'title' 		=> __( 'Email type', 'proof-ready' ),
+                'title' 		=> __( 'Email type', 'proof-ready-email' ),
                 'type' 			=> 'select',
-                'description' 	=> __( 'Choose which format of email to send.', 'proof-ready' ),
+                'description' 	=> __( 'Choose which format of email to send.', 'proof-ready-email' ),
                 'default' 		=> 'html',
                 'class'			=> 'email_type',
                 'options'		=> array(
-                    'plain'		 	=> __( 'Plain text', 'proof-ready' ),
-                    'html' 			=> __( 'HTML', 'proof-ready' ),
-                    'multipart' 	=> __( 'Multipart', 'proof-ready' ),
+                    'plain'		 	=> __( 'Plain text', 'proof-ready-email' ),
+                    'html' 			=> __( 'HTML', 'proof-ready-email' ),
+                    'multipart' 	=> __( 'Multipart', 'proof-ready-email' ),
                 )
             )
         );

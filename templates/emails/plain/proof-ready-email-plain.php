@@ -24,6 +24,6 @@ echo sprintf( __( 'Total: %s', 'proof-ready-email' ), $item_data->total ) . "\n"
 
 echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
-echo __( 'This is an email sent as the order status has been changed to "Proof".', 'proof-ready-email' ) . "\n\n";
+echo __( 'This is an email sent as the order status has been changed to "Proof Ready".', 'proof-ready-email' ) . "\n\n";
 
 echo apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) );

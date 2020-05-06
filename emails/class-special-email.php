@@ -15,10 +15,10 @@ class Special_Email extends WC_Email {
         // Add email ID, title, description, heading, subject
         $this->id                   = 'special_email';
         $this->customer_email       = true;         // intended to be sent to customer
-        $this->title                = __( 'Special Email', 'special-email' );
+        $this->title                = __( 'Special', 'special-email' );
         $this->description          = __( 'This email is sent to cusstomers when an order status is changed to Special.', 'special-email' );
 
-        $this->heading              = __( 'Special Item Email', 'special-email' );
+        $this->heading              = __( 'Special', 'special-email' );
         $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'special-email' );
 
         // email template path

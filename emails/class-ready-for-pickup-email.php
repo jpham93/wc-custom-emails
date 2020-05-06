@@ -15,10 +15,10 @@ class Ready_For_Pickup_Email extends WC_Email {
         // Add email ID, title, description, heading, subject
         $this->id                   = 'ready_for_pickup_email';
         $this->customer_email       = true;
-        $this->title                = __( 'Ready For Pick Up Email', 'ready-for-pickup-email' );
+        $this->title                = __( 'Ready For Pick Up', 'ready-for-pickup-email' );
         $this->description          = __( 'This email is received when an order status is changed to "Ready for Pick Up".', 'ready-for-pickup-email' );
 
-        $this->heading              = __( 'Ready For Pick Up ', 'ready-for-pickup-email' );
+        $this->heading              = __( 'Ready For Pick Up', 'ready-for-pickup-email' );
         $this->subject              = __( '[{blogname}] Order for {product_title} (Order {order_number}) - {order_date}', 'ready-for-pickup-email' );
 
         // email template path
