@@ -1,3 +1,5 @@
+WARNING: This plugin has been deprecated and replaced by "vta-wc-custom-order-status".
+
 === Plugin Name ===
 Contributors: (this should be a list of wordpress.org userid's)
 Donate link: https://jamespham.io
